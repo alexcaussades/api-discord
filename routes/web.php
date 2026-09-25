@@ -1,22 +1,24 @@
 <?php
 
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ApiEDController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'returnAppiUrl']);
+
+Route::prefix('api-ED')->group(function () {
+
+    Route::get('/', [HomeController::class, 'index']);
+
+    Route::get('/status', [HomeController::class, 'status']);
+
+    Route::get('/action/{id}/{info}', [ApiEDController::class, 'actionWithInfo']);
+
+    Route::get('/action/{id}/{galaxie}', [ApiEDController::class, 'action']);
 });
 
-Route::prefix('api')->group(function () {
+Route::prefix('api-FS')->group(function () {
 
-    Route::get('/', function () {
-        return response()->json(['message' => "API Elite Dangerous"]);
-    });
-
-    Route::get('/status', function () {
-        /** dans resources/json/app.json on peut définir la version de l'application */
-        $appVersion = json_decode(file_get_contents(resource_path('json/app.json')), true)['APP_version'] ?? '1.0.0';
-        $status = ['status' => 'Actuellement en ligne', 'version' => $appVersion];
-        return response()->json($status);
-    });
 });
