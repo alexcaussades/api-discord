@@ -24,28 +24,20 @@ class DiscordServeurController extends Controller
             "presence" => "Presence"
         ];
 
-        header('Content-Type: application/json');
-        header('title', 'Discord Serveur API');
     }
 
     public function getDiscordServeur()
     {
-        header('Content-Type: application/json');
-        header('title', 'Discord Serveur API');
-
         return $this->discordServeur;
     }
 
     public function getDiscordServeurInvite()
     {
-        header('Content-Type: application/json');
-        header('title', 'Discord Serveur API');
-        return $this->discordServeur["url_du_serveur_discord_invite"];
+       return $this->discordServeur["url_du_serveur_discord_invite"];
     }
     
     public function getDiscordServeurWidget()
     {
-        header('Content-Type: application/json');
         // changer le title pour renomer la page sur version html
         return view('discord_serveur_widget', [
             'title' => 'Discord Serveur Widget',
@@ -55,15 +47,11 @@ class DiscordServeurController extends Controller
 
     public function getDiscordServeurDeTest()
     {
-        header('Content-Type: application/json');
-        header('title', 'Discord Serveur API');
         return $this->discordServeur["url_du_serveur_discord_de_test"];
     }
 
     public function getpresence()
     {
-        header('Content-Type: application/json');
-        header('title', 'Discord Serveur API');
         $discordResponse = Http::get($this->discordServeur["url_du_serveur_discord"]);
         return json_decode($discordResponse->body(), true)["presence_count"];
     }
