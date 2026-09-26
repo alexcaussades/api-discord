@@ -7,24 +7,9 @@ class HomeController extends Controller
 {
     public function returnAppiUrl()
     {
-        return redirect(url('/api-ED'));
+        return redirect(url('/api-elite'));
     }
-
-    public function apiED()
-    {
-        return redirect(url('/api-ED'));
-    }
-
-    public function apiFS()
-    {
-        return redirect(url('/Api-FS'));
-    }
-
-    public function apiFSUrl()
-    {
-        return redirect(url('/Api-FS'));
-    }
-
+   
     public function index()
     {
         return response()->json(['message' => "Welcome to the API Elite Dangerous private from CMD alexcaussades"]);

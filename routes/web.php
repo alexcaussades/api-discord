@@ -6,9 +6,9 @@ use App\Http\Controllers\ApiEDController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [HomeController::class, 'returnAppiUrl']);
+Route::get('/', [HomeController::class, 'index']);
 
-Route::prefix('api-ED')->group(function () {
+Route::prefix('api-elite')->group(function () {
 
     Route::get('/', [HomeController::class, 'index']);
 
@@ -16,9 +16,9 @@ Route::prefix('api-ED')->group(function () {
 
     Route::get('/action/{id}/{info}', [ApiEDController::class, 'actionWithInfo']);
 
-    Route::get('/action/{id}/{galaxie}', [ApiEDController::class, 'action']);
+    Route::get('/action/{id}/{galaxie}/{id_discord}', [ApiEDController::class, 'action']);
 });
 
-Route::prefix('api-FS')->group(function () {
+Route::prefix('api-farming')->group(function () {
 
 });
