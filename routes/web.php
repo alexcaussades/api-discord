@@ -1,8 +1,9 @@
 <?php
 
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ApiEDController;
+use App\Http\Controllers\DiscordServeurController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,3 +23,11 @@ Route::prefix('api-elite')->group(function () {
 Route::prefix('api-farming')->group(function () {
 
 });
+
+Route::prefix('test')->group(function () {
+    Route::get('/discord-serveur', [DiscordServeurController::class, 'getDiscordServeur']);
+    Route::get('/discord-serveur-invite', [DiscordServeurController::class, 'getDiscordServeurInvite']);
+    Route::get('/discord-serveur-widget', [DiscordServeurController::class, 'getDiscordServeurWidget']);
+    Route::get('/discord-serveur-de-test', [DiscordServeurController::class, 'getDiscordServeurDeTest']);
+    Route::get('/presence', [DiscordServeurController::class, 'getpresence']);
+}); 
