@@ -15,35 +15,35 @@ return new class extends Migration
             $table->unsignedBigInteger('game_map_id')->default(1);
             $table->unsignedBigInteger('farmland_id');
 
-            // Informations générales
+            // Informations gÃ©nÃ©rales
             $table->string('name');
             $table->decimal('area', 10, 4)->default(0);
             $table->decimal('price', 12, 2)->default(0);
 
-            // Informations PNJ / propriétaire
+            // Informations PNJ / propriÃ©taire
             $table->string('npc_name')->nullable();
 
-            // Paramètres économiques
+            // ParamÃ¨tres Ã©conomiques
             $table->decimal('price_scale', 10, 6)->default(1);
             $table->decimal('price_per_ha', 12, 2)->default(60000);
 
             // Type de terrain
             $table->string('field_type')->nullable();
 
-            // État du terrain
+            // Ã‰tat du terrain
             $table->boolean('cultivable')->default(true);
             $table->boolean('reservable')->default(true);
             $table->boolean('default_farm_property')->default(false);
 
-            // Géométrie du terrain
+            // GÃ©omÃ©trie du terrain
             $table->json('polygon')->nullable();
 
-            // Disponibilité
+            // DisponibilitÃ©
             $table->string('status')->default('free');
 
             $table->timestamps();
 
-            // Un farmland_id doit être unique à l'intérieur d'une carte
+            // Un farmland_id doit Ãªtre unique Ã  l'intÃ©rieur d'une carte
             $table->unique(
                 ['game_map_id', 'farmland_id'],
                 'farmlands_game_map_farmland_unique'
