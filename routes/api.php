@@ -15,6 +15,11 @@ Route::prefix('farmlands')->group(function () {
         'show'
     ]);
 
+    Route::get('/check/{farmland}/', [
+        FarmlandController::class,
+        'reservations'
+    ]);
+
     Route::post('/{farmland}/reserve', [
         FarmlandController::class,
         'reserve'
