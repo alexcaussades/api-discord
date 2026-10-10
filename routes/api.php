@@ -15,12 +15,12 @@ Route::prefix('farmlands')->group(function () {
         'show'
     ]);
 
-    Route::get('/check/{farmland}/', [
+    Route::get('/{farmland}/check', [
         FarmlandController::class,
-        'reservations'
+        'check'
     ]);
 
-    Route::post('/{farmland}/reserve', [
+    Route::post('/{farmland}/reserve/', [
         FarmlandController::class,
         'reserve'
     ]);
@@ -28,5 +28,30 @@ Route::prefix('farmlands')->group(function () {
     Route::delete('/{farmland}/reserve', [
         FarmlandController::class,
         'release'
+    ]);
+
+    Route::get('/serveur-fs25/stats', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'getStats'
+    ]);
+
+    Route::get('/serveur-fs25/ping', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'ping'
+    ]);
+
+    Route::get('/serveur-fs25/status', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'getServerStatus'
+    ]);
+
+    Route::get('/serveur-fs25/mods', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'getMods'
+    ]);
+
+    Route::get('/serveur-fs25/player', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'getPlayer'
     ]);
 });
