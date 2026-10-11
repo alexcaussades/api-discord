@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'serveur_fs25' => [
+        'url' => env('updating_serveur_fs25_url'),
+    ],
+
 ];
