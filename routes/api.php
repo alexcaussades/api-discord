@@ -29,29 +29,42 @@ Route::prefix('farmlands')->group(function () {
         FarmlandController::class,
         'release'
     ]);
+});
 
-    Route::get('/serveur-fs25/stats', [
+Route::prefix('serveur-fs25')->group(function () {
+
+    Route::get('/stats', [
         \App\Http\Controllers\ServeurFs25::class,
         'getStats'
     ]);
 
-    Route::get('/serveur-fs25/ping', [
+    Route::get('/ping', [
         \App\Http\Controllers\ServeurFs25::class,
         'ping'
     ]);
 
-    Route::get('/serveur-fs25/status', [
+    Route::get('/status', [
         \App\Http\Controllers\ServeurFs25::class,
         'getServerStatus'
     ]);
 
-    Route::get('/serveur-fs25/mods', [
+    Route::get('/mods', [
         \App\Http\Controllers\ServeurFs25::class,
         'getMods'
     ]);
 
-    Route::get('/serveur-fs25/player', [
+    Route::get('/player', [
         \App\Http\Controllers\ServeurFs25::class,
         'getPlayer'
+    ]);
+
+    Route::get('/uptime', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'getUptime'
+    ]);
+
+    Route::get('/buy', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'buy'
     ]);
 });

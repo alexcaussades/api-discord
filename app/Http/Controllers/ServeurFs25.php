@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use DateTime;
 class ServeurFs25 extends Controller
 {
     // recuperer les statistiques du serveur FS25 le liens se trouve dans la variable d'environnement SERVEUR_FS25
@@ -77,4 +78,51 @@ class ServeurFs25 extends Controller
             return response()->json(['count' => 0], 200);
         }
     }
+
+    public function getUptime()
+    {
+        $url = env('SERVEUR_FS25');
+        $response = file_get_contents($url);
+
+        $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $json = json_encode($xml);
+        $data = json_decode($json, true);
+
+        if(isset($data['dayTime'])) {
+            $time = DateTime::createFromFormat('H:i:s', $data['dayTime']);
+            return response()->json(['uptime' => $time->format('H:i:s')], 200);
+        } else {
+            return response()->json(['uptime' => 0], 200);
+        }
+    }
+
+    public function buy()
+{
+    $response = file_get_contents(env('SERVEUR_FS25'));
+    $data = json_decode(json_encode(
+        simplexml_load_string($response)
+    ), true);
+
+    $updated = 0;
+
+   DB::transaction(function () use ($data, &$updated) {
+        foreach (data_get($data, 'Farmlands.Farmland', []) as $f) {
+            $a = $f['@attributes'] ?? $f;
+            $id = (int) $a['id'];
+            $owner = (int) $a['owner'];
+
+            if ($owner === 0) continue;
+
+            DB::table('farmland_reservetion')
+                ->where('farmland_id', $id)
+                ->delete();
+
+            $updated += DB::table('farmlands')
+                ->where('id', $id)
+                ->update(['status' => 'buy']);
+        }
+    });
+
+    return response()->json(['updated' => $updated]);
+}
 }
