@@ -113,7 +113,7 @@ class ServeurFs25 extends Controller
 
             if ($owner === 0) continue;
 
-            DB::table('farmland_reservetion')
+            DB::table('farmland_reservations')
                 ->where('farmland_id', $id)
                 ->delete();
 
