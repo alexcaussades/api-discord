@@ -88,6 +88,9 @@ class ServeurFs25 extends Controller
         $json = json_encode($xml);
         $data = json_decode($json, true);
 
+        $date = new DateTime();
+        $date->modify('+47486.321 seconds');
+        
         if(isset($data['dayTime'])) {
             $time = DateTime::createFromFormat('H:i:s', $data['dayTime']);
             return response()->json(['uptime' => $time->format('H:i:s')], 200);
@@ -97,32 +100,32 @@ class ServeurFs25 extends Controller
     }
 
     public function buy()
-{
-    $response = file_get_contents(env('SERVEUR_FS25'));
-    $data = json_decode(json_encode(
-        simplexml_load_string($response)
-    ), true);
+    {
+        $response = file_get_contents(env('SERVEUR_FS25'));
+        $data = json_decode(json_encode(
+            simplexml_load_string($response)
+        ), true);
 
-    $updated = 0;
+        $updated = 0;
 
-   DB::transaction(function () use ($data, &$updated) {
-        foreach (data_get($data, 'Farmlands.Farmland', []) as $f) {
-            $a = $f['@attributes'] ?? $f;
-            $id = (int) $a['id'];
-            $owner = (int) $a['owner'];
+        DB::transaction(function () use ($data, &$updated) {
+            foreach (data_get($data, 'Farmlands.Farmland', []) as $f) {
+                $a = $f['@attributes'] ?? $f;
+                $id = (int) $a['id'];
+                $owner = (int) $a['owner'];
 
-            if ($owner === 0) continue;
+                if ($owner === 0) continue;
 
-            DB::table('farmland_reservations')
-                ->where('farmland_id', $id)
-                ->delete();
+                DB::table('farmland_reservations')
+                    ->where('farmland_id', $id)
+                    ->delete();
 
-            $updated += DB::table('farmlands')
-                ->where('id', $id)
-                ->update(['status' => 'buy']);
-        }
-    });
+                $updated += DB::table('farmlands')
+                    ->where('id', $id)
+                    ->update(['status' => 'buy']);
+            }
+        });
 
     return response()->json(['updated' => $updated]);
-}
+    }
 }
