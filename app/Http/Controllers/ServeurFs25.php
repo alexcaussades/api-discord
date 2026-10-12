@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\DB;
-use DateTime;
+use App\Http\Controllers\GithubController;
 class ServeurFs25 extends Controller
 {
     // recuperer les statistiques du serveur FS25 le liens se trouve dans la variable d'environnement SERVEUR_FS25
@@ -87,15 +88,29 @@ class ServeurFs25 extends Controller
         $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json = json_encode($xml);
         $data = json_decode($json, true);
-
-        $date = new DateTime();
-        $date->modify('+47486.321 seconds');
-        
-        if(isset($data['dayTime'])) {
-            $time = DateTime::createFromFormat('H:i:s', $data['dayTime']);
-            return response()->json(['uptime' => $time->format('H:i:s')], 200);
+               
+        if(isset($data['@attributes']['dayTime'])) {
+            $time = CarbonInterval::milliseconds($data['@attributes']['dayTime'])->cascade();
+            return response()->json(
+                [
+                    'Data' => [
+                        'Server' => [
+                            'uptime' => $time->format('%H:%I:%S'),
+                            'name_serveur' => $data['@attributes']['name'] ?? 'Not Available',
+                            'service' => 'online',
+                            'Version' => $data['@attributes']['version'] ?? 0,
+                            'players' => (int)($data['Slots']['@attributes']['numUsed'] ?? 0),
+                            'Mods' => count($data['Mods']['Mod']),
+                        ],
+                        'Api' => [
+                            'status' => 'online',
+                            'version' => app(GithubController::class)->release_last() ?? '1.0.0',
+                            'open_issues' => app(GithubController::class)->open_issues() ?? '--',
+                        ]
+                    ],                
+                ], 200);
         } else {
-            return response()->json(['uptime' => 0], 200);
+            return response()->json(['uptime' => "Server offline"], 200);
         }
     }
 
