@@ -35,8 +35,8 @@ return [
         ],
     ],
 
-    'serveur_fs25' => [
-        'url' => env('updating_serveur_fs25_url'),
+    'fs25' => [
+        'url' => env('UPDATING_SERVEUR_FS25_URL'),
     ],
 
 ];

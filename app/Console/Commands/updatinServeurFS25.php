@@ -22,7 +22,7 @@ class updatinServeurFS25 extends Command
 
     public function handle()
     {
-        $url = config('services.serveur_fs25.url');
+        $url = config('services.fs25.url');
 
         try {
             $reponse = Http::timeout(30)->get($url);
