@@ -1,58 +1,163 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎮 API Discord — GameHub & Farming Simulator 25
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-API-FF2D20?logo=laravel&logoColor=white)
+![Python](https://img.shields.io/badge/Discord_Bot-Python-5865F2?logo=discord&logoColor=white)
+![HTTPS](https://img.shields.io/badge/HTTPS-Secured-success)
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**API REST développée avec Laravel pour centraliser les fonctionnalités de GameHub et assurer la communication avec le bot Discord, notamment pour la gestion des parcelles et du serveur Farming Simulator 25.**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+L'API permet aux applications et aux utilisateurs autorisés d'interagir avec les données du projet à travers des requêtes HTTP et des réponses JSON.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🔗 Liens officiels
 
-## Learning Laravel
+- **Dépôt GitHub :** https://github.com/alexcaussades/api-discord/
+- **Documentation des endpoints :** https://alexcaussades.freeboxos.fr/api_perso/endepoint
+- **Bot Discord Farming Simulator :** https://github.com/alexcaussades/FarmingBot
+- **API en ligne :** https://alexcaussades.freeboxos.fr/api_perso/
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📋 Fonctionnalités
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🌾 Gestion des parcelles
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Consultation de la liste des parcelles disponibles.
+- Vérification de la disponibilité d'une parcelle.
+- Réservation d'une parcelle par un joueur identifié sur Discord.
+- Annulation d'une réservation via une requête autorisée.
+- Centralisation des opérations de réservation dans l'API.
 
-## Agentic Development
+### 🖥️ Serveur Farming Simulator 25
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Consultation des informations exposées par l'API concernant le serveur :
 
-```bash
-composer require laravel/boost --dev
+- Informations générales du serveur.
+- Vérification de la connectivité avec le serveur (*ping*).
+- État du serveur.
+- Liste des mods.
+- Liste des joueurs connectés.
+- Statistiques du serveur.
+- Durée de fonctionnement (*uptime*).
+- Point d'accès relatif aux achats.
 
-php artisan boost:install
+### 🤖 Intégration Discord
+
+L'API sert d'intermédiaire entre le bot Discord et les données du projet.
+
+Elle permet notamment de :
+- Transmettre l'identifiant Discord d'un joueur.
+- Centraliser les vérifications liées aux parcelles.
+- Effectuer les opérations de réservation et d'annulation.
+- Récupérer les informations du serveur Farming Simulator 25.
+
+## 🛠️ Technologies
+
+| Technologie | Utilisation |
+|---|---|
+| PHP | Langage principal de l'API |
+| Laravel | Framework backend |
+| API REST / JSON | Communication entre les applications |
+| Python | Bot Discord client de l'API |
+| HTTPS | Communication chiffrée |
+| SQLite | Base de données utilisée dans certaines configurations du projet |
+
+## 🌐 Endpoints disponibles
+
+La liste ci-dessous correspond aux endpoints publiés par la documentation de l'API. Les routes protégées nécessitent une authentification.
+
+**Base URL :**
+
+```text
+https://alexcaussades.freeboxos.fr/api_perso
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 🌾 Parcelles — Farming Simulator 25
 
-## Contributing
+| Méthode | Endpoint | Authentification |
+|---|---|---|
+| `GET` | `/api/farmlands` | Non |
+| `GET` | `/api/farmlands/{id}/check` | Non |
+| `POST` | `/api/farmlands/{id}/reserve` | Oui |
+| `DELETE` | `/api/farmlands/{id}/cancel` | Oui |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🖥️ Serveur Farming Simulator 25
 
-## Code of Conduct
+| Méthode | Endpoint | Authentification |
+|---|---|---|
+| `GET` | `/api/serveur-fs25` | Non |
+| `GET` | `/api/serveur-fs25/ping` | Non |
+| `GET` | `/api/serveur-fs25/status` | Non |
+| `GET` | `/api/serveur-fs25/mods` | Non |
+| `GET` | `/api/serveur-fs25/players` | Non |
+| `GET` | `/api/serveur-fs25/stats` | Non |
+| `GET` | `/api/serveur-fs25/uptime` | Non |
+| `GET` | `/api/serveur-fs25/buy` | Non |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+> **Important :** les routes publiques ne nécessitent pas de jeton d'authentification selon la documentation publiée. Les routes de réservation et d'annulation sont protégées et leur accès est soumis aux permissions configurées par l'API.
 
-## Security Vulnerabilities
+Pour consulter les détails, les paramètres et les informations d'authentification, utilise la [documentation complète des endpoints](https://alexcaussades.freeboxos.fr/api_perso/endepoint).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🚀 Installation
 
-## License
+### Prérequis
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- PHP et les extensions requises par le projet.
+- Composer.
+- Une base de données compatible avec la configuration Laravel.
+- Un serveur web compatible, par exemple Apache.
+- Python et les dépendances nécessaires pour le bot Discord, si tu souhaites utiliser l'intégration Discord.
+
+
+## 🔐 Sécurité
+
+Les bonnes pratiques à respecter pour l'exploitation de l'API :
+
+- Utiliser HTTPS pour toutes les communications.
+- Protéger les routes de réservation et d'annulation.
+- Vérifier l'identité Discord du joueur côté serveur.
+- Valider les paramètres et le contenu des requêtes.
+- Contrôler les permissions avant toute modification.
+- Ne jamais exposer les jetons dans le code source ou les journaux.
+- Ne pas exposer directement la base de données SQLite sur Internet.
+- Désactiver le mode debug en production avec `APP_DEBUG=false`.
+
+## 🐛 Gestion des erreurs
+
+Les réponses HTTP permettent au client de distinguer les différents résultats d'une opération.
+
+| Code HTTP | Signification |
+|---|---|
+| `200 OK` | Requête traitée avec succès |
+| `201 Created` | Ressource créée avec succès |
+| `401 Unauthorized` | Authentification manquante ou invalide |
+| `403 Forbidden` | Accès interdit |
+| `404 Not Found` | Ressource introuvable |
+| `409 Conflict` | Conflit, par exemple une parcelle déjà réservée |
+| `422 Unprocessable Entity` | Données invalides |
+| `500 Internal Server Error` | Erreur interne du serveur |
+
+Les codes réellement renvoyés dépendent de l'implémentation de chaque route.
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues pour améliorer l'API, ajouter des fonctionnalités ou corriger des problèmes.
+
+1. Fork le dépôt.
+2. Crée une branche dédiée à ta modification.
+3. Effectue tes changements et vérifie leur fonctionnement.
+4. Soumets une Pull Request en expliquant les modifications apportées.
+
+## 📄 Licence
+
+La licence du projet est à préciser selon les conditions définies dans le dépôt. En l'absence de licence explicite, aucune autorisation générale de réutilisation du code ne doit être présumée.
+
+## 👨‍💻 Auteur
+
+**AlexCaussades**
+
+- GitHub : https://github.com/alexcaussades
+- Dépôt API : https://github.com/alexcaussades/api-discord
+- Documentation : https://alexcaussades.freeboxos.fr/api_perso/endepoint
+
+---
+
+*API privée destinée à l'écosystème GameHub et à l'intégration du bot Discord Farming Simulator 25.*
