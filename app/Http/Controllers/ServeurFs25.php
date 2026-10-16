@@ -88,6 +88,11 @@ class ServeurFs25 extends Controller
         $xml = simplexml_load_string($response, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json = json_encode($xml);
         $data = json_decode($json, true);
+
+        $uptimeBDD = DB::table('update_serveur')->where('status', 1)->latest()->first();
+        $lastUpdateBdd = $uptimeBDD ? Carbon::parse($uptimeBDD->created_at)->diffInMinutes(now()) : null;
+        $lastUpdateBdd = explode('.', $lastUpdateBdd);
+        
                
         if(isset($data['@attributes']['dayTime'])) {
             $time = CarbonInterval::milliseconds($data['@attributes']['dayTime'])->cascade();
@@ -96,6 +101,7 @@ class ServeurFs25 extends Controller
                     'Data' => [
                         'Server' => [
                             'uptime' => $time->format('%H:%I:%S'),
+                            'last_update_bdd' => $lastUpdateBdd[0],
                             'name_serveur' => $data['@attributes']['name'] ?? 'Not Available',
                             'service' => 'online',
                             'Version' => $data['@attributes']['version'] ?? 0,
@@ -110,7 +116,7 @@ class ServeurFs25 extends Controller
                     ],                
                 ], 200);
         } else {
-            return response()->json(['uptime' => "Server offline"], 200);
+            return response()->json(['uptime' => "Server offline", 'last_update_bdd' => $lastUpdateBdd[0]], 200);
         }
     }
 
