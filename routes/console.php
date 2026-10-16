@@ -13,6 +13,6 @@ Schedule::command('app:updatin-serveur-f-s25')
     ->hourly()
     ->withoutOverlapping();
 
-Schedule::command('base:sauvegarder')
+Schedule::command('app:sauvegarder-base')
     ->dailyAt('02:00')
     ->withoutOverlapping();
