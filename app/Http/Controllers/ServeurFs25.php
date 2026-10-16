@@ -103,7 +103,7 @@ class ServeurFs25 extends Controller
                             'uptime' => $time->format('%H:%I:%S'),
                             'last_update_bdd' => $lastUpdateBdd[0],
                             'name_serveur' => $data['@attributes']['name'] ?? 'Not Available',
-                            'service' => 'online',
+                            'status' => 'online',
                             'Version' => $data['@attributes']['version'] ?? 0,
                             'players' => (int)($data['Slots']['@attributes']['numUsed'] ?? 0),
                             'Mods' => count($data['Mods']['Mod']),
