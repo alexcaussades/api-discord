@@ -13,7 +13,11 @@ class TaskServeurController extends Controller
      */
     public function index()
     {
-        return response()->json(\App\Models\TaskServeur::all());
+        $data = [
+            'data' => \App\Models\TaskServeur::all(),
+            'count' => \App\Models\TaskServeur::count(),
+        ];
+        return response()->json($data);
     }
 
     /**
@@ -22,43 +26,39 @@ class TaskServeurController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'player_id' => ['required', 'exists:players,id'],
-            'farmland_id' => ['required', 'exists:farmlands,id'],
+            'player_id' => ['required', 'exists:players,discord_id'],
+            'farmland_id' => ['required', 'exists:farmlands,farmland_id'],
             'task_name' => ['required', 'string', 'max:255'],
-            'month' => ['required', 'string', 'regex:/^(?:[1-9]|1[0-2]|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)$/iu'],
+            'month' => [
+                'required',
+                'string',
+                'regex:/^(?:[1-9]|1[0-2]|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)$/iu',
+            ],
         ]);
 
         $months = [
-            1 => 'janvier',
-            2 => 'février',
-            3 => 'mars',
-            4 => 'avril',
-            5 => 'mai',
-            6 => 'juin',
-            7 => 'juillet',
-            8 => 'août',
-            9 => 'septembre',
-            10 => 'octobre',
-            11 => 'novembre',
-            12 => 'décembre',
+            1 => 'janvier', 2 => 'février', 3 => 'mars',
+            4 => 'avril', 5 => 'mai', 6 => 'juin',
+            7 => 'juillet', 8 => 'août', 9 => 'septembre',
+            10 => 'octobre', 11 => 'novembre', 12 => 'décembre',
         ];
 
         $monthInput = $data['month'];
-
-        $month = is_numeric($monthInput)
+        $data['month'] = is_numeric($monthInput)
             ? $months[(int) $monthInput]
             : mb_strtolower($monthInput, 'UTF-8');
-        
-        //insert a new task
-        $taskServeur = DB::table('task_serveurs')->insertGetId([
+
+        $data = [
             'player_id' => $data['player_id'],
             'farmland_id' => $data['farmland_id'],
             'task_name' => $data['task_name'],
-            'month' => $month,
+            'month' => $data['month'],
             'created_at' => now(),
             'updated_at' => now(),
-        ]);
-        $taskServeur = \App\Models\TaskServeur::findOrFail($taskServeur);
+        ];
+
+        $taskServeur = DB::table('task_serveurs')->insert($data);
+
         return response()->json($taskServeur, 201);
     }
 
@@ -92,10 +92,8 @@ class TaskServeurController extends Controller
     }
 
     public function getTasksByMonth(Request $request, string $month)
-    {
-        $request->validate([
-            'month' => ['required', 'string', 'regex:/^(?:[1-9]|1[0-2]|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)$/iu'],
-        ]);
+    {      
+        
         $month = is_numeric($month)
             ? (int) $month
             : mb_strtolower($month, 'UTF-8');
@@ -117,9 +115,14 @@ class TaskServeurController extends Controller
         if (is_numeric($month)) {
             $month = $months[(int) $month];
         }
+        // table join to get player information for the tasks
 
-        $tasks = \App\Models\TaskServeur::where('month', $month)->get();
-        return response()->json($tasks);
+        $tasks = DB::table('task_serveurs')->join('players', 'task_serveurs.player_id', '=', 'players.discord_id')->where('month', $month)->get();
+        
+        return response()->json([
+            'data' => $tasks,
+            'count' => count($tasks)
+        ]);
     }
 
     public function getTasksByPlayer(Request $request, string $playerId)
@@ -128,5 +131,18 @@ class TaskServeurController extends Controller
         return response()->json($tasks);
     }
 
-    
+    // public function test()
+    // {
+    //     $data = [
+    //         'player_id' => "1145762103655936122",
+    //         'farmland_id' => "85",
+    //         'task_name' => 'Action de nettoyage',
+    //         'month' => '12',
+    //         'created_at' => now(),
+    //         'updated_at' => now(),
+    //     ];
+    //     $response = $this->store(new Request($data));
+    //     return $response;
+    // }
+
 }

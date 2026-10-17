@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class TaskServeur extends Model
 {
@@ -15,17 +16,17 @@ class TaskServeur extends Model
 
     public function player()
     {
-        return $this->belongsTo(Player::class);
+        return $this->belongsTo(Player::class, 'player_id', 'discord_id');
     }
 
     public function farmland()
     {
-        return $this->belongsTo(Farmland::class);
+        return $this->belongsTo(Farmland::class, 'farmland_id', 'farmland_id');
     }
 
-    public function insertTask(array $data)
+    public static function createTask(array $data)
     {
-        return self::create($data);
+        DB::table('task_serveurs')->insert($data);
     }
 
     public function updateTask(array $data)
@@ -61,7 +62,8 @@ class TaskServeur extends Model
 
     public function getTasksByMonth(string $month)
     {
-        return self::where('month', $month)->get();
+        $data = DB::table('task_serveurs')->where('month', $month)->get();
+        return $data;
     }
 
 }

@@ -12,9 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('task_serveurs', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->foreignId('player_id')->constrained('players')->onDelete('cascade');
-            $table->foreignId('farmland_id')->constrained('farmlands')->onDelete('cascade');
+            $table->id();
+
+            $table->string('player_id');
+            $table->foreign('player_id')
+                ->references('discord_id')
+                ->on('players')
+                ->cascadeOnDelete();
+
+            $table->foreignId('farmland_id')
+                ->constrained('farmlands')
+                ->cascadeOnDelete();
+            
             $table->text('task_name');
             $table->string('month');
             $table->timestamps();

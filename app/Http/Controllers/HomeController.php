@@ -20,6 +20,7 @@ class HomeController extends Controller
             'repository' => 'https://github.com/alexcaussades/api-discord',
             'resources' => [
                 'farmlands' => '/api/farmlands',
+                'tasks' => '/api/farmlands/tasks',
                 'farming_simulator_server' => '/api/serveur-fs25',
             ],
         ]);
