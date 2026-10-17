@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/endepoint', [HomeController::class, 'endepoint']);
+//Route::get('/test', function () {
+    //return view('terrains', ['terrainList' => $terrainList]);
+//});
 
 Route::prefix('api-elite')->group(function () {
 

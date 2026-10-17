@@ -3,7 +3,15 @@
 use App\Http\Controllers\Api\FarmlandController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('farmlands')->group(function () {
+Route::prefix('farmlands')->name('farmlands.')->group(function () {
+
+    Route::prefix('tasks')->name('tasks.')->group(function () {
+        Route::get('/', [
+            function () {
+                return response()->json(['tasks' => []]);
+            }
+        ]);
+    });
 
     Route::get('/', [
         FarmlandController::class,
@@ -29,6 +37,7 @@ Route::prefix('farmlands')->group(function () {
         FarmlandController::class,
         'release'
     ]);
+
 });
 
 Route::prefix('serveur-fs25')->group(function () {
