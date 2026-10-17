@@ -1,9 +1,34 @@
 <?php
 
 use App\Http\Controllers\Api\FarmlandController;
+use App\Http\Controllers\Api\TaskServeurController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('farmlands')->group(function () {
+Route::prefix('farmlands')->name('farmlands.')->group(function () {
+
+    Route::prefix('tasks')->name('tasks.')->group(function () {
+        Route::get('/', [
+            TaskServeurController::class,
+            'index'
+        ]);
+        Route::get('/month/{month}', [
+            TaskServeurController::class,
+            'getTasksByMonth'
+        ]);
+        Route::get('/player/{playerId}', [
+            TaskServeurController::class,
+            'getTasksByPlayer'
+        ]);
+        Route::post('/create', [
+            TaskServeurController::class,
+            'store'
+        ]);
+        Route::delete('/delete/{id}', [
+            TaskServeurController::class,
+            'destroy'
+        ]);
+        
+    });
 
     Route::get('/', [
         FarmlandController::class,
@@ -29,6 +54,7 @@ Route::prefix('farmlands')->group(function () {
         FarmlandController::class,
         'release'
     ]);
+
 });
 
 Route::prefix('serveur-fs25')->group(function () {
