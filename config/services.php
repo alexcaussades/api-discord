@@ -39,4 +39,8 @@ return [
         'url' => env('UPDATING_SERVEUR_FS25_URL'),
     ],
 
+    'ivao' => [
+        'api_key' => env('API_KEY_IVAO'),
+    ],
+
 ];

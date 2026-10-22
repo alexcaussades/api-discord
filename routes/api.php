@@ -94,3 +94,33 @@ Route::prefix('serveur-fs25')->group(function () {
         'buy'
     ]);
 });
+
+
+Route::prefix('ivao')->group(function () {
+
+    Route::get('/', [
+        \App\Http\Controllers\IvaoController::class,
+        'index'
+    ]);
+
+    Route::get('/metar/{icao}', [
+        \App\Http\Controllers\IvaoController::class,
+        'metar'
+    ]);
+
+    Route::get('/taf/{icao}', [
+        \App\Http\Controllers\IvaoController::class,
+        'taf'
+    ]);
+
+    Route::get('/taf', [
+        \App\Http\Controllers\IvaoController::class,
+        'getTaf'
+    ]);
+
+    Route::get('/atis/{icao}', [
+        \App\Http\Controllers\IvaoController::class,
+        'atis'
+    ]);
+
+});
