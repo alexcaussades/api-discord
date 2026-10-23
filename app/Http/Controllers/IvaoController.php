@@ -29,7 +29,11 @@ class IvaoController extends Controller
         $request = Http::get($this->whazzup);
 
         $data = [
-            'atc' => $request->json('connections.atc') ?? []
+            "data" => [
+                'atc' => $request->json('connections.atc') ?? ["error" => "No data available"],
+                'pilot' => $request->json('connections.pilot') ?? ["error" => "No data available"],
+                'total' => $request->json('connections.total') ?? ["error" => "No data available"]
+            ]
         ];
 
         return $data;
