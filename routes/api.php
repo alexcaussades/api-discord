@@ -113,7 +113,7 @@ Route::prefix('ivao')->group(function () {
         'taf'
     ]);
 
-    Route::get('/atis/{icao}', [
+    Route::get('/atis/{icao}/{position?}', [
         \App\Http\Controllers\IvaoController::class,
         'atis'
     ]);
