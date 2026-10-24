@@ -77,7 +77,7 @@ class EndepointController extends Controller
                     ],
                 ],
             ],
-            'serveur-fs25' => [
+            'Serveur-fs25' => [
                 'start' => [
                     'url' => url('/api/serveur-fs25'),
                     'method' => 'GET',
@@ -118,6 +118,23 @@ class EndepointController extends Controller
                     'method' => 'GET',
                     'auth' => 'false',
                 ],
+            ],
+            'Ivao' =>[
+                'metar' => [
+                    'url' => url('/api/ivao/metar/{icao}'),
+                    'method' => 'GET',
+                    'auth' => 'false',
+                ],
+                'taf' => [
+                    'url' => url('/api/ivao/taf/{icao}'),
+                    'method' => 'GET',
+                    'auth' => 'false',
+                ],
+                'atis' => [
+                    'url' => url('/api/ivao/atis/{icao}'),
+                    'method' => 'GET',
+                    'auth' => 'false',
+                ]
             ],
         ];
 
