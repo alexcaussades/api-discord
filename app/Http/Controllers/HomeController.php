@@ -22,6 +22,7 @@ class HomeController extends Controller
                 'farmlands' => '/api/farmlands',
                 'tasks' => '/api/farmlands/tasks',
                 'farming_simulator_server' => '/api/serveur-fs25',
+                'ivao' => '/api/ivao',
             ],
         ]);
     }

@@ -16,7 +16,9 @@ L'API permet aux applications et aux utilisateurs autorisés d'interagir avec le
 - **Bot Discord Farming Simulator :** https://github.com/alexcaussades/FarmingBot
 - **API en ligne :** https://alexcaussades.freeboxos.fr/api_perso/
 
-## 📋 Fonctionnalités
+# 📋 Fonctionnalités
+
+## 🌾Farming 25
 
 ### 🌾 Gestion des parcelles
 
@@ -38,6 +40,7 @@ Consultation des informations exposées par l'API concernant le serveur :
 - Statistiques du serveur.
 - Durée de fonctionnement (*uptime*).
 - Point d'accès relatif aux achats.
+- Gestions des taches
 
 ### 🤖 Intégration Discord
 
@@ -69,6 +72,7 @@ La liste ci-dessous correspond aux endpoints publiés par la documentation de l'
 ```text
 https://alexcaussades.freeboxos.fr/api_perso
 ```
+## Farming Simulator 25
 
 ### 🌾 Parcelles — Farming Simulator 25
 
@@ -91,6 +95,25 @@ https://alexcaussades.freeboxos.fr/api_perso
 | `GET` | `/api/serveur-fs25/stats` | Non |
 | `GET` | `/api/serveur-fs25/uptime` | Non |
 | `GET` | `/api/serveur-fs25/buy` | Non |
+
+### Gestion des taches
+
+| Méthode | Endpoint | Authentification |
+|---|---|---|
+| `POST` | `/api/farmlands/tasks/create` | Oui |
+| `GET` | `/api/farmlands/tasks/month` | Non |
+| `GET` | `/api/farmlands/tasks/player` | Non |
+| `DELETE` | `/api/farmlands/tasks/delete` | Oui |
+
+## IVAO
+
+| Méthode | Endpoint | Authentification |
+|---|---|---|
+| `GET` | `/api/ivao/metar/{icao}` | Non |
+| `GET` | `/api/ivao/taf/{icao}` | Non |
+| `GET` | `/api/ivao/atis/{icao}` | Non |
+
+
 
 > **Important :** les routes publiques ne nécessitent pas de jeton d'authentification selon la documentation publiée. Les routes de réservation et d'annulation sont protégées et leur accès est soumis aux permissions configurées par l'API.
 
