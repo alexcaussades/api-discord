@@ -102,7 +102,7 @@ https://alexcaussades.freeboxos.fr/api_perso
 |---|---|---|
 | `POST` | `/api/farmlands/tasks/create` | Oui |
 | `GET` | `/api/farmlands/tasks/month` | Non |
-| `GET` | `/api/farmlands/tasks/player` | Non |
+| `GET` | `/api/farmlands/tasks/player` | Oui |
 | `DELETE` | `/api/farmlands/tasks/delete` | Oui |
 
 ## IVAO
