@@ -77,24 +77,82 @@ class IvaoController extends Controller
         return $data;
     }
 
-    public function atis(string $icao)
+    public function atis(string $icao, int $position = 0)
     {
         $icao = trim($icao);
-        $request = Http::acceptJson()->timeout(10)->get("https://api.ivao.aero/v2/airports/{$icao}/atis/latest", [
+        $positions = [
+            0 => "DEFAULT",
+            1 => "_APP",
+            2 => "_TWR",
+            3 => "_GND",
+            4 => "_DEL",
+            5 => "_ATIS",
+            6 => "_FSS"
+        ];
+       if ($position === 0) {
+           $request = Http::acceptJson()->timeout(10)->get("https://api.ivao.aero/v2/airports/{$icao}/atis/latest", [
             "accept" => "application/json",
             "apiKey" => config('services.ivao.api_key')
-        ]);
-        $updatedAt = Carbon::parse($request->json('updated_at') ?? now());
-        $now = Carbon::now('Europe/Paris');
-        $time = $now->diffForHumans($updatedAt);
-        $data = [
-            'data' =>[
-                'revision' => $request->json('revision') ?? ['error' => 'No data available'],
-                'information' => $request->json('lines')[1] ?? ['error' => 'No data available'],
-                'update' => $time ?? null
-            ], 
-        ];
-        return $data;
+            ]);
+            $updatedAt = Carbon::parse($request->json('updated_at') ?? now());
+            $now = Carbon::now('Europe/Paris');
+            $zoulou = Carbon::now('UTC');
+            $time = $now->diffForHumans($updatedAt);
+            $request2 = Http::acceptJson()->timeout(10)->get("https://api.ivao.aero/v2/tracker/sessions/{$request->json('sessionId')}", [
+                "accept" => "application/json",
+                "apiKey" => config('services.ivao.api_key')
+            ]);
+            $creator = Http::acceptJson()->timeout(10)->get("https://api.ivao.aero/v2/creators/{$request2->json('userId')}", [
+                "accept" => "application/json",
+                "apiKey" => config('services.ivao.api_key')
+            ]);
+            $date = Carbon::parse($request2->json('atcSession')['createdAt'] ?? now());
+            $totalMinutes = (int) abs($zoulou->diffInMinutes($date));
+            $time2 = sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60);
+            $data = [
+                'data' =>[
+                    'revision' => $request->json('revision') ?? ['error' => 'No data available'],
+                    'user_id' => $request2->json('userId') ?? ['error' => 'No data available'],
+                    'information' => $request->json('lines')[1] ?? ['error' => 'No data available'],
+                    'ATC_position' => $request2->json('callsign') ?? ['error' => 'No data available'],
+                    'ATC_session' => $request2->json('atcSession') ?? ['error' => 'No data available'],
+                    'ATC_session_time' => $time2 ?? null,
+                    'creator' => $creator->successful() ? $creator->json("links")['url'] ?? ['error' => 'No data available'] : ['error' => 'No data available'],
+                    'update' => $time ?? null,
+                    
+                ], 
+            ];
+            return $data;
+       } else {
+           $request = Http::acceptJson()->timeout(10)->get("https://api.ivao.aero/v2/ATCPositions/{$icao}{$positions[$position]}/atis/latest", [
+            "accept" => "application/json",
+            "apiKey" => config('services.ivao.api_key')
+            ]);
+            $ATC_session = $request->json('id') ?? null;
+            
+            $request2 = Http::acceptJson()->timeout(10)->get("https://api.ivao.aero/v2/tracker/sessions/{$request->json('sessionId')}", [
+                "accept" => "application/json",
+                "apiKey" => config('services.ivao.api_key')
+            ]);
+            $zoulou = Carbon::now('UTC');
+            $updatedAt = Carbon::parse($request->json('updated_at') ?? now());
+            $now = Carbon::now('Europe/Paris');
+            $date = Carbon::parse($request2->json('atcSession')['createdAt'] ?? now());
+            $totalMinutes = (int) abs($zoulou->diffInMinutes($date));
+            $time2 = sprintf('%d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60);
+            $data = [
+                'data' => [
+                    'ATC_position' => strtoupper($icao.$positions[$position]),
+                    'user_id' => $request2->json('userId') ?? ['error' => 'No data available'],
+                    'revision' => $request->json('revision') ?? ['error' => 'No data available'],
+                    'information' => $request->json('lines')[1] ?? ['error' => 'No data available'],
+                    'frequency' => $request2->json('atcSession')['frequency'] ?? ['error' => 'No data available'],
+                    'ATC_session' => $request2->json('atcSession') ?? ['error' => 'No data available'],
+                    'ATC_session_time' => $time2 ?? null
+                ]
+            ];
+            return $data;
+       }
     }
 
      public function sso(Request $request)
