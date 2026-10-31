@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "api/api-discord",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "API for Discord integration service",
     "keywords": [
         "laravel",
         "framework"
@@ -16,7 +16,6 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "*",
         "fakerphp/faker": "^1.23",
-        "laravel/boost": "^2.2",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
@@ -57,10 +56,6 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
-        ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan boost:update --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

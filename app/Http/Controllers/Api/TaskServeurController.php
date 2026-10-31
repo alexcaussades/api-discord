@@ -23,12 +23,13 @@ class TaskServeurController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $private = null)
     {
         $data = $request->validate([
             'player_id' => ['required', 'exists:players,discord_id'],
             'farmland_id' => ['required', 'exists:farmlands,farmland_id'],
             'task_name' => ['required', 'string', 'max:255'],
+            'private' => ['nullable', 'boolean'],
             'month' => [
                 'required',
                 'string',
@@ -53,9 +54,12 @@ class TaskServeurController extends Controller
             'farmland_id' => $data['farmland_id'],
             'task_name' => $data['task_name'],
             'month' => $data['month'],
+            'private' => $private ?? $request->input('private', false),
             'created_at' => now(),
             'updated_at' => now(),
         ];
+
+        dd($data);
 
         $taskServeur = DB::table('task_serveurs')->insert($data);
 
@@ -125,9 +129,13 @@ class TaskServeurController extends Controller
         ]);
     }
 
-    public function getTasksByPlayer(Request $request, string $playerId)
+    public function getTasksByPlayer(Request $request, string $playerId, $private = null)
     {
-        $tasks = \App\Models\TaskServeur::where('player_id', $playerId)->get();
+        $query = \App\Models\TaskServeur::where('player_id', $playerId);
+        if (!is_null($private)) {
+            $query->where('private', filter_var($private, FILTER_VALIDATE_BOOLEAN));
+        }
+        $tasks = $query->get();
         return response()->json($tasks);
     }
 
