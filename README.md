@@ -101,8 +101,10 @@ https://alexcaussades.freeboxos.fr/api_perso
 | Méthode | Endpoint | Authentification |
 |---|---|---|
 | `POST` | `/api/farmlands/tasks/create` | Oui |
+| `POST` | `/api/farmlands/tasks/create/Private` | Oui |
 | `GET` | `/api/farmlands/tasks/month` | Non |
 | `GET` | `/api/farmlands/tasks/player` | Oui |
+| `GET` | `/api/farmlands/tasks/player/private` | Oui |
 | `DELETE` | `/api/farmlands/tasks/delete` | Oui |
 
 ## IVAO
