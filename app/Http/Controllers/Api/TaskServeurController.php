@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TaskServeurController extends Controller
 {
@@ -141,16 +142,20 @@ class TaskServeurController extends Controller
 
     // public function test()
     // {
+    //     $response = DB::table('task_serveurs')->where('id', 7)->get();
+    //     $date = Carbon::today()->setTime(14, 30, 0);
     //     $data = [
-    //         'player_id' => "1145762103655936122",
-    //         'farmland_id' => "85",
-    //         'task_name' => 'Action de nettoyage',
-    //         'month' => '12',
-    //         'created_at' => now(),
-    //         'updated_at' => now(),
+    //         'id' => $response[0]->id,
+    //         'private' => $response[0]->private,
+    //         'player_id' => $response[0]->player_id,
+    //         'farmland_id' => $response[0]->farmland_id,
+    //         'task_name' => $response[0]->task_name,
+    //         'month' => $response[0]->month,
+    //         'created_at' => Carbon::parse($response[0]->created_at),
+    //         '_session' => $date->timestamp,
     //     ];
-    //     $response = $this->store(new Request($data));
-    //     return $response;
+
+    //     return $data;
     // }
 
 }

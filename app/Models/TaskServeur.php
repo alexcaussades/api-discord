@@ -66,4 +66,9 @@ class TaskServeur extends Model
         return $data;
     }
 
+    public function taskByNotPrivate()
+    {
+        $data = DB::table('task_serveurs')->where('private', false)->get();
+        return $data;
+    }
 }
