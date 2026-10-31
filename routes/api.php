@@ -15,11 +15,11 @@ Route::prefix('farmlands')->name('farmlands.')->group(function () {
             TaskServeurController::class,
             'getTasksByMonth'
         ]);
-        Route::get('/player/{playerId}', [
+        Route::get('/player/{playerId}/{private?}', [
             TaskServeurController::class,
             'getTasksByPlayer'
         ]);
-        Route::post('/create', [
+        Route::post('/create/{private?}', [
             TaskServeurController::class,
             'store'
         ]);
