@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\GithubController;
+use Illuminate\Http\Request;
+
 class ServeurFs25 extends Controller
 {
     // recuperer les statistiques du serveur FS25 le liens se trouve dans la variable d'environnement SERVEUR_FS25
@@ -148,5 +150,22 @@ class ServeurFs25 extends Controller
         });
 
     return response()->json(['updated' => $updated]);
+    }
+
+    public function adminServPassword(Request $request)
+    {
+        // je recherche le mot de passe administrateur du serveur avec la vérification des informations d'identification de l'utilisateur qui valide via son discord id qui fait la requête si celui-ci est autorisé à accéder à cette information lui donne le mot de passe sinon retourne une erreur
+        // pour information je recois du POST avec le discord_id de l'utilisateur
+        $discordId = $request->input('discord_id');
+
+        $authorized = DB::table('players')->where('discord_id', $discordId)->exists();
+
+        if (!$authorized) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $adminPassword = env('ADMIN_SERV_PASSWORD', 'Not Available');
+        return response()->json(['admin_password' => $adminPassword]);
+
     }
 }
