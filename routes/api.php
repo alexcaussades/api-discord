@@ -93,6 +93,11 @@ Route::prefix('serveur-fs25')->group(function () {
         \App\Http\Controllers\ServeurFs25::class,
         'buy'
     ]);
+
+    Route::post('/admin-serv-password', [
+        \App\Http\Controllers\ServeurFs25::class,
+        'adminServPassword'
+    ]);
 });
 
 
